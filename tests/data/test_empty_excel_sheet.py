@@ -9,8 +9,14 @@ from data.excel_sheet import ExcelSheet
 
 class TestEmptyExcelSheet(unittest.TestCase):
     def setUp(self) -> None:
-        workbook = openpyxl.Workbook()
-        self.excel_sheet = ExcelSheet(worksheet=workbook.active)
+        self.workbook = openpyxl.Workbook()
+        self.excel_sheet = ExcelSheet(worksheet=self.workbook.active)
+
+    def test_get_title(self):
+        expected = self.workbook.active.title
+        actual = self.excel_sheet.get_title()
+
+        self.assertEqual(expected, actual)
 
     def test_get_empty_cell(self):
         expected = None
@@ -145,7 +151,7 @@ class TestEmptyExcelSheet(unittest.TestCase):
 
         for row_num in range(1, 4):
             for column_num in range(1, 4):
-                border = self.excel_sheet.worksheet.cell(row=row_num, column=column_num).border
+                border = self.excel_sheet.get_border(row=row_num, column=column_num)
                 self.assertIsNotNone(border)
 
     def test_set_ruled_line_raise_exception(self):
