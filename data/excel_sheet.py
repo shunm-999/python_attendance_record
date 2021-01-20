@@ -191,7 +191,7 @@ class ExcelSheet:
             end_row = ExcelSheet.MAX_ROW
 
         formula = ','.join(formula)
-        dv = DataValidation(type="list", formula1=formula)
+        dv = DataValidation(type="list", formula1=formula, allow_blank=True)
 
         dv.ranges = ExcelUtil.create_range_string(
             start_row=start_row,

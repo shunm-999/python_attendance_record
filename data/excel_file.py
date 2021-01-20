@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 import openpyxl
 
@@ -10,19 +11,30 @@ class ExcelFile:
         self.__filename = filename
         self.__excel_sheet_list = []
         if create_file:
-            self.__workbook = openpyxl.Workbook(filename)
+            self.__workbook = openpyxl.Workbook()
         else:
             self.__workbook = openpyxl.load_workbook(filename)
 
         for worksheet in self.__workbook.worksheets:
             self.__excel_sheet_list.append(ExcelSheet(worksheet))
 
-        if self.__workbook.active is not None:
-            self.__active = ExcelSheet(self.__workbook.active)
-        else:
-            self.__active = None
+        self.__tmp_active = None
+        self.__tmp_active_sheet = None
 
-    def is_contains(self, sheet_title):
+    def __get_active_sheet(self) -> Optional[ExcelSheet]:
+        if self.__workbook.active is None:
+            return None
+
+        if self.__workbook.active is self.__tmp_active:
+            return self.__tmp_active_sheet
+
+        self.__tmp_active = self.__workbook.active
+        self.__tmp_active_sheet = ExcelSheet(self.__workbook.active)
+        return self.__tmp_active_sheet
+
+    active_sheet = property(__get_active_sheet)
+
+    def is_contains(self, sheet_title) -> bool:
         is_contains = False
         for excel_sheet in self.__excel_sheet_list:
             if sheet_title == excel_sheet.get_title():
@@ -39,21 +51,18 @@ class ExcelFile:
             if sheet_title == excel_sheet.get_title():
                 return excel_sheet
 
-    def get_active_sheet(self) -> ExcelSheet:
-        return self.__active
-
     def create_sheet(self, sheet_title: str, index=None):
 
         if index is None:
             worksheet = self.__workbook.create_sheet(title=sheet_title)
             excel_sheet = ExcelSheet(worksheet)
             self.__excel_sheet_list.append(excel_sheet)
-            self.__active = excel_sheet
+            self.__workbook.active = self.__workbook.sheetnames.index(sheet_title)
         else:
             worksheet = self.__workbook.create_sheet(title=sheet_title, index=index)
             excel_sheet = ExcelSheet(worksheet)
             self.__excel_sheet_list.insert(index, excel_sheet)
-            self.__active = excel_sheet
+            self.__workbook.active = index
 
     def delete_sheet_from_index(self, index: int):
         if len(self.__excel_sheet_list) > index:
@@ -72,11 +81,11 @@ class ExcelFile:
 
     def switch_active_sheet_from_index(self, index: int):
         if len(self.__excel_sheet_list) > index:
-            self.__active = self.get_sheet_from_index(index)
+            self.__workbook.active = index
 
     def switch_active_sheet_from_sheet_title(self, sheet_title: str):
         if self.is_contains(sheet_title):
-            self.__active = self.get_sheet_from_sheet_title(sheet_title)
+            self.__workbook.active = self.__workbook.sheetnames.index(sheet_title)
 
     def save(self, filename=None):
         if filename is None:
