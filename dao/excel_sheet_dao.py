@@ -110,17 +110,17 @@ class ExcelSheetDao:
     """
 
     def put_sum(self, target_row, target_column, start_row, start_column, end_row, end_column):
-        cell_range = ExcelUtil.create_range_string(start_row=start_row,
-                                                   start_column=start_column,
-                                                   end_row=end_row,
-                                                   end_column=end_column)
+        cell_range = ExcelUtil.create_cell_range_string(start_row=start_row,
+                                                        start_column=start_column,
+                                                        end_row=end_row,
+                                                        end_column=end_column)
 
         self.__excel_sheet.put(row=target_row, column=target_column, value=f'=SUM({cell_range})')
 
     def put_average(self, target_row, target_column, start_row, start_column, end_row, end_column):
-        cell_range = ExcelUtil.create_range_string(start_row=start_row,
-                                                   start_column=start_column,
-                                                   end_row=end_row,
-                                                   end_column=end_column)
+        cell_range = ExcelUtil.create_cell_range_string(start_row=start_row,
+                                                        start_column=start_column,
+                                                        end_row=end_row,
+                                                        end_column=end_column)
 
         self.__excel_sheet.put(row=target_row, column=target_column, value=f'=AVERAGE({cell_range})')
