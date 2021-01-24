@@ -200,3 +200,22 @@ class ExcelSheet:
             end_column=column)
 
         self.__worksheet.add_data_validation(dv)
+
+    def set_data_validation_from_cell_range(self, start_row, end_row, column, cell_range: str):
+
+        if end_row is None:
+            end_row = ExcelSheet.MAX_ROW
+
+        dv = DataValidation(type="list", formula1=cell_range, allow_blank=True)
+
+        dv.ranges = ExcelUtil.create_cell_range_string(
+            start_row=start_row,
+            start_column=column,
+            end_row=end_row,
+            end_column=column)
+
+        self.__worksheet.add_data_validation(dv)
+
+    def set_number_format(self, row, column, number_format: str):
+        coordinate = ExcelUtil.create_cell_string(row=row, column=column)
+        self.__worksheet[coordinate].number_format = number_format

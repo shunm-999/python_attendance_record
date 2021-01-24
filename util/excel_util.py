@@ -4,7 +4,7 @@ from openpyxl.utils import get_column_letter
 class ExcelUtil:
 
     @staticmethod
-    def crete_cell_string(row, column, fixed_row=False, fixed_column=False):
+    def create_cell_string(row, column, fixed_row=False, fixed_column=False):
         if type(column) is int:
             column = get_column_letter(column)
 
