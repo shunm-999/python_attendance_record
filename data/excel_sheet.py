@@ -22,7 +22,7 @@ class ExcelSheet:
         return self.__worksheet.cell(row=row, column=column).value
 
     def get_rows(self, start_row, start_column, end_row=None, end_column=None):
-        cell_range = ExcelUtil.create_range_string(
+        cell_range = ExcelUtil.create_cell_range_string(
             start_row=start_row,
             start_column=start_column,
             end_row=end_row,
@@ -51,7 +51,7 @@ class ExcelSheet:
         if not isinstance(values[0], Iterable):
             return
 
-        cell_range = ExcelUtil.create_range_string(
+        cell_range = ExcelUtil.create_cell_range_string(
             start_row=start_row,
             start_column=start_column,
             end_row=end_row,
@@ -95,7 +95,7 @@ class ExcelSheet:
 
     def merge_cells(self, start_row, start_column, end_row, end_column):
 
-        merge_cell_range = ExcelUtil.create_range_string(
+        merge_cell_range = ExcelUtil.create_cell_range_string(
             start_row=start_row,
             start_column=start_column,
             end_row=end_row,
@@ -193,7 +193,7 @@ class ExcelSheet:
         formula = ','.join(formula)
         dv = DataValidation(type="list", formula1=formula, allow_blank=True)
 
-        dv.ranges = ExcelUtil.create_range_string(
+        dv.ranges = ExcelUtil.create_cell_range_string(
             start_row=start_row,
             start_column=column,
             end_row=end_row,
