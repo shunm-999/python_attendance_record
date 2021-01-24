@@ -6,6 +6,7 @@ from openpyxl.styles.colors import BLACK
 
 from dao.excel_sheet_dao import ExcelSheetDao
 from data.excel_sheet import ExcelSheet
+from util.excel_util import ExcelUtil
 
 
 class TestExcelDao(unittest.TestCase):
@@ -186,3 +187,13 @@ class TestExcelDao(unittest.TestCase):
     def test_set_data_validation(self):
         formula = ['red', 'blue', 'yellow']
         self.excel_sheet_dao.set_data_validation(start_row=1, end_row=31, column=1, formula=formula)
+
+    def test_set_data_validation_from_cell_range(self):
+        cell_range = ExcelUtil.create_cell_range_string(start_column='C', start_row=5, end_column='C', end_row=10,
+                                                        fixed_start_column=True, fixed_start_row=True,
+                                                        fixed_end_column=True, fixed_end_row=True)
+        self.excel_sheet_dao.set_data_validation_from_cell_range(start_row=1, end_row=31, column=1,
+                                                                 cell_range=cell_range)
+
+    def test_set_number_format(self):
+        self.excel_sheet_dao.set_number_format(row=1, column=1, number_format='[h]:mm')

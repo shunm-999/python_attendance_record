@@ -174,6 +174,15 @@ class ExcelRepository(ExcelRepositoryInterface):
     def set_data_validation(self, start_row, end_row, column, formula=None):
         self.__excel_sheet_dao.set_data_validation(start_row=start_row, end_row=end_row, column=column, formula=formula)
 
+    def set_data_validation_from_cell_range(self, start_row, end_row, column, cell_range: str):
+        self.__excel_sheet_dao.set_data_validation_from_cell_range(start_row=start_row,
+                                                                   end_row=end_row,
+                                                                   column=column,
+                                                                   cell_range=cell_range)
+
+    def set_number_format(self, row, column, number_format: str):
+        self.__excel_sheet_dao.set_number_format(row=row, column=column, number_format=number_format)
+
     """
     Excel関数
     """

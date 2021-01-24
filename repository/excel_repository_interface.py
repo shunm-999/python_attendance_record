@@ -152,6 +152,14 @@ class ExcelRepositoryInterface(metaclass=ABCMeta):
     def set_data_validation(self, start_row, end_row, column, formula=None):
         pass
 
+    @abstractmethod
+    def set_data_validation_from_cell_range(self, start_row, end_row, column, cell_range: str):
+        pass
+
+    @abstractmethod
+    def set_number_format(self, row, column, number_format: str):
+        pass
+
     """
     Excel関数
     """
