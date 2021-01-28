@@ -10,7 +10,6 @@ class TEXT(ExcelFunction):
 
     def __str__(self):
         text_format = self.text_format.value if isinstance(self.text_format, TextFormat) else self.text_format
-
         return f'TEXT({self.number}, "{text_format}")'
 
 

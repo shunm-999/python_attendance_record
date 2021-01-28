@@ -1,9 +1,10 @@
 from collections import Iterable
 
-from openpyxl.styles import Font, Side, Border, PatternFill
+from openpyxl.styles import Font, Side, Border, PatternFill, Alignment
 from openpyxl.utils import get_column_letter, column_index_from_string
 from openpyxl.worksheet.datavalidation import DataValidation
 
+from const.alignmentconst import AlignmentConst
 from util.excel_util import ExcelUtil
 
 
@@ -95,6 +96,11 @@ class ExcelSheet:
 
     def merge_cells(self, start_row, start_column, end_row, end_column):
 
+        if type(start_column) is str:
+            start_column = column_index_from_string(start_column)
+        if type(end_column) is str:
+            end_column = column_index_from_string(end_column)
+
         merge_cell_range = ExcelUtil.create_cell_range_string(
             start_row=start_row,
             start_column=start_column,
@@ -102,19 +108,6 @@ class ExcelSheet:
             end_column=end_column)
 
         self.__worksheet.merge_cells(merge_cell_range)
-
-    def merge_cells_and_dimensions(self, start_row, start_column, end_row, end_column):
-        height = 0
-        width = 0
-
-        for row_num in range(start_row, end_row + 1):
-            height += self.get_row_height(row=row_num)
-        for column_num in range(start_column, end_column + 1):
-            width += self.get_column_width(column=column_num)
-
-        self.merge_cells(start_row=start_row, start_column=start_column, end_row=end_row, end_column=end_column)
-        self.set_row_height(row=start_row, height=height)
-        self.set_column_width(column=start_column, width=width)
 
     def set_freeze_panes(self, row, column):
         if type(column) is int:
@@ -133,7 +126,23 @@ class ExcelSheet:
         self.__worksheet.cell(row=row, column=column).font = Font(size=size, bold=bold, italic=italic)
 
     def get_border(self, row, column) -> Border:
+        if type(column) is str:
+            column = column_index_from_string(column)
         return self.__worksheet.cell(row=row, column=column).border
+
+    def set_border(self, row, column, top=False, bottom=False, left=False, right=False, style='thin',
+                   color='000000') -> None:
+        if type(column) is str:
+            column = column_index_from_string(column)
+        side = Side(style=style, color=color)
+        top = side if top else None
+        bottom = side if bottom else None
+        left = side if left else None
+        right = side if right else None
+
+        border = Border(top=top, bottom=bottom, left=left, right=right)
+
+        self.__worksheet.cell(row=row, column=column).border = border
 
     def set_ruled_line(self, start_row, start_column, end_row=None, end_column=None, style='thin', color='000000'):
 
@@ -170,7 +179,7 @@ class ExcelSheet:
         if end_row is None:
             end_row = start_row
         if end_column is None:
-            end_column = end_column
+            end_column = start_column
 
         if type(start_column) is str:
             start_column = column_index_from_string(start_column)
@@ -219,3 +228,22 @@ class ExcelSheet:
     def set_number_format(self, row, column, number_format: str):
         coordinate = ExcelUtil.create_cell_string(row=row, column=column)
         self.__worksheet[coordinate].number_format = number_format
+
+    def set_text_alignment(self, row, column, horizontal: AlignmentConst, vertical: AlignmentConst,
+                           text_rotation: int = 0):
+        coordinate = ExcelUtil.create_cell_string(row=row, column=column)
+        self.__worksheet[coordinate].alignment = Alignment(horizontal=horizontal.value, vertical=vertical.value,
+                                                           textRotation=text_rotation)
+
+    def set_text_alignments(self, start_row, start_column, end_row, end_column, horizontal: AlignmentConst,
+                            vertical: AlignmentConst, text_rotation: int = 0):
+        if type(start_column) is str:
+            start_column = column_index_from_string(start_column)
+        if type(end_column) is str:
+            end_column = column_index_from_string(end_column)
+
+        for row_num in range(start_row, end_row + 1):
+            for column_num in range(start_column, end_column + 1):
+                self.__worksheet.cell(row=row_num, column=column_num).alignment = Alignment(horizontal=horizontal.value,
+                                                                                            vertical=vertical.value,
+                                                                                            textRotation=text_rotation)

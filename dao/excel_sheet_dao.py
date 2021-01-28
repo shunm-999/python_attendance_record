@@ -1,5 +1,6 @@
 from openpyxl.styles import Font, PatternFill, Border
 
+from const.alignmentconst import AlignmentConst
 from data.excel_sheet import ExcelSheet
 from util.excel_util import ExcelUtil
 
@@ -59,12 +60,6 @@ class ExcelSheetDao:
                                        end_row=end_row,
                                        end_column=end_column)
 
-    def merge_cells_and_dimensions(self, start_row, start_column, end_row, end_column):
-        self.__excel_sheet.merge_cells_and_dimensions(start_row=start_row,
-                                                      start_column=start_column,
-                                                      end_row=end_row,
-                                                      end_column=end_column)
-
     def set_freeze_panes(self, row, column):
         self.__excel_sheet.set_freeze_panes(row=row, column=column)
 
@@ -76,6 +71,17 @@ class ExcelSheetDao:
 
     def get_border(self, row, column) -> Border:
         return self.__excel_sheet.get_border(row=row, column=column)
+
+    def set_border(self, row, column, top=False, bottom=False, left=False, right=False, style='thin',
+                   color='000000') -> None:
+        self.__excel_sheet.set_border(row=row,
+                                      column=column,
+                                      top=top,
+                                      bottom=bottom,
+                                      left=left,
+                                      right=right,
+                                      style=style,
+                                      color=color)
 
     def set_ruled_line(self, start_row, start_column, end_row=None, end_column=None, style='thin', color='000000'):
         self.__excel_sheet.set_ruled_line(start_row=start_row,
@@ -113,6 +119,17 @@ class ExcelSheetDao:
 
     def set_number_format(self, row, column, number_format: str):
         self.__excel_sheet.set_number_format(row=row, column=column, number_format=number_format)
+
+    def set_text_alignment(self, row, column, horizontal: AlignmentConst, vertical: AlignmentConst,
+                           text_rotation: int = 0):
+        self.__excel_sheet.set_text_alignment(row=row, column=column, horizontal=horizontal, vertical=vertical,
+                                              text_rotation=text_rotation)
+
+    def set_text_alignments(self, start_row, start_column, end_row, end_column, horizontal: AlignmentConst,
+                            vertical: AlignmentConst, text_rotation: int = 0):
+        self.__excel_sheet.set_text_alignments(start_row=start_row, start_column=start_column, end_row=end_row,
+                                               end_column=end_column, horizontal=horizontal,
+                                               vertical=vertical, text_rotation=text_rotation)
 
     """
     Excel関数

@@ -41,6 +41,16 @@ class IF(ExcelFunction):
             return f'IF({self.condition}, {self.true_value}, {self.false_value})'
 
 
+class IF_ERROR(ExcelFunction):
+
+    def __init__(self, target, error_value):
+        self.target = target
+        self.error_value = error_value
+
+    def __str__(self):
+        return f'IFERROR({self.target}, {self.error_value})'
+
+
 class IS_BLANK(ExcelFunction):
     def __init__(self, target):
         self.target = target

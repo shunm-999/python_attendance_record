@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
-
 from openpyxl.styles import Border, Font, PatternFill
 
+from const.alignmentconst import AlignmentConst
 from data.excel_sheet import ExcelSheet
 
 
@@ -111,10 +111,6 @@ class ExcelRepositoryInterface(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def merge_cells_and_dimensions(self, start_row, start_column, end_row, end_column):
-        pass
-
-    @abstractmethod
     def set_freeze_panes(self, row, column):
         pass
 
@@ -128,6 +124,11 @@ class ExcelRepositoryInterface(metaclass=ABCMeta):
 
     @abstractmethod
     def get_border(self, row, column) -> Border:
+        pass
+
+    @abstractmethod
+    def set_border(self, row, column, top=False, bottom=False, left=False, right=False, style='thin',
+                   color='000000') -> None:
         pass
 
     @abstractmethod
@@ -158,6 +159,16 @@ class ExcelRepositoryInterface(metaclass=ABCMeta):
 
     @abstractmethod
     def set_number_format(self, row, column, number_format: str):
+        pass
+
+    @abstractmethod
+    def set_text_alignment(self, row, column, horizontal: AlignmentConst, vertical: AlignmentConst,
+                           text_rotation: int = 0):
+        pass
+
+    @abstractmethod
+    def set_text_alignments(self, start_row, start_column, end_row, end_column, horizontal: AlignmentConst,
+                            vertical: AlignmentConst, text_rotation: int = 0):
         pass
 
     """
