@@ -104,23 +104,6 @@ class TestExcelDao(unittest.TestCase):
         self.assertEqual(expected_a1, actual_a1)
         self.assertIsNone(actual_c3)
 
-    def test_merge_cells_and_dimensions(self):
-
-        for row_num in range(1, 4):
-            self.excel_sheet_dao.set_row_height(row=row_num, height=16)
-        for column_num in range(1, 4):
-            self.excel_sheet_dao.set_column_width(column=column_num, width=16)
-
-        self.excel_sheet_dao.merge_cells_and_dimensions(start_row=1, start_column=1, end_row=3, end_column=3)
-
-        expected = 48
-
-        actual_height = self.excel_sheet_dao.get_row_height(row=1)
-        actual_width = self.excel_sheet_dao.get_column_width(column=1)
-
-        self.assertEqual(expected, actual_height)
-        self.assertEqual(expected, actual_width)
-
     def test_freeze_panes(self):
         self.excel_sheet_dao.set_freeze_panes(row=2, column=1)
 
@@ -142,6 +125,11 @@ class TestExcelDao(unittest.TestCase):
         self.assertEqual(font.size, 16)
         self.assertTrue(font.bold)
         self.assertTrue(font.italic)
+
+    def test_set_border(self):
+        self.excel_sheet_dao.set_border(row=1, column=1, top=True, left=True, right=True, bottom=True)
+        border = self.excel_sheet_dao.get_border(row=1, column=1)
+        self.assertIsNotNone(border)
 
     def test_set_ruled_line(self):
         self.excel_sheet_dao.set_ruled_line(start_row=1, start_column=1, end_row=3, end_column=3)

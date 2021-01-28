@@ -4,6 +4,7 @@ import openpyxl
 from openpyxl.styles import Color
 from openpyxl.styles.colors import BLACK
 
+from const.alignmentconst import AlignmentConst
 from data.excel_sheet import ExcelSheet
 from util.excel_util import ExcelUtil
 
@@ -108,22 +109,19 @@ class TestEmptyExcelSheet(unittest.TestCase):
         self.assertEqual(expected_a1, actual_a1)
         self.assertIsNone(actual_c3)
 
-    def test_merge_cells_and_dimensions(self):
+    def test_merge_cells_from_letter(self):
 
-        for row_num in range(1, 4):
-            self.excel_sheet.set_row_height(row=row_num, height=16)
-        for column_num in range(1, 4):
-            self.excel_sheet.set_column_width(column=column_num, width=16)
+        self.excel_sheet.put(row=1, column=1, value=1)
+        self.excel_sheet.put(row=3, column=3, value=3)
+        self.excel_sheet.merge_cells(start_row=1, start_column='A', end_row=3, end_column='C')
 
-        self.excel_sheet.merge_cells_and_dimensions(start_row=1, start_column=1, end_row=3, end_column=3)
+        expected_a1 = 1
 
-        expected = 48
+        actual_a1 = self.excel_sheet.get(row=1, column=1)
+        actual_c3 = self.excel_sheet.get(row=3, column=3)
 
-        actual_height = self.excel_sheet.get_row_height(row=1)
-        actual_width = self.excel_sheet.get_column_width(column=1)
-
-        self.assertEqual(expected, actual_height)
-        self.assertEqual(expected, actual_width)
+        self.assertEqual(expected_a1, actual_a1)
+        self.assertIsNone(actual_c3)
 
     def test_freeze_panes(self):
         self.excel_sheet.set_freeze_panes(row=2, column=1)
@@ -146,6 +144,11 @@ class TestEmptyExcelSheet(unittest.TestCase):
         self.assertEqual(font.size, 16)
         self.assertTrue(font.bold)
         self.assertTrue(font.italic)
+
+    def test_set_border(self):
+        self.excel_sheet.set_border(row=1, column=1, top=True, left=True, right=True, bottom=True)
+        border = self.excel_sheet.get_border(row=1, column=1)
+        self.assertIsNotNone(border)
 
     def test_set_ruled_line(self):
         self.excel_sheet.set_ruled_line(start_row=1, start_column=1, end_row=3, end_column=3)
@@ -200,3 +203,13 @@ class TestEmptyExcelSheet(unittest.TestCase):
 
     def test_set_number_format(self):
         self.excel_sheet.set_number_format(row=1, column=1, number_format='[h]:mm')
+
+    def test_set_text_alignment(self):
+        self.excel_sheet.set_text_alignment(column='A', row=1, horizontal=AlignmentConst.CENTER,
+                                            vertical=AlignmentConst.CENTER)
+        self.excel_sheet.set_text_alignment(column=2, row=2, horizontal=AlignmentConst.CENTER,
+                                            vertical=AlignmentConst.BOTTOM, text_rotation=90)
+
+    def test_set_text_alignments(self):
+        self.excel_sheet.set_text_alignments(start_column='A', start_row=1, end_column='C', end_row=16,
+                                             horizontal=AlignmentConst.CENTER, vertical=AlignmentConst.CENTER)

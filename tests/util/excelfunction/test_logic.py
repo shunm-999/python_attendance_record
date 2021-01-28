@@ -1,7 +1,7 @@
 import unittest
 
 from util.excel_util import ExcelUtil
-from util.excelfunction.logic import AND, OR, NOT, IF, IS_BLANK, IS_NOT_BLANK
+from util.excelfunction.logic import AND, OR, NOT, IF, IS_BLANK, IS_NOT_BLANK, IF_ERROR
 
 
 class TestAnd(unittest.TestCase):
@@ -52,6 +52,16 @@ class TestIf(unittest.TestCase):
         expected = 'IF(A4 >= 50, "合格", "不合格")'
         A4 = ExcelUtil.create_cell_string(row=4, column='A')
         actual = IF(f'{A4} >= 50', '"合格"', '"不合格"').to_str()
+        self.assertEqual(expected, actual)
+
+
+class TestIfError(unittest.TestCase):
+    def test_if_error(self):
+        expected = 'IFERROR(C3/B3, "--")'
+        C3 = ExcelUtil.create_cell_string(column='C', row=3)
+        B3 = ExcelUtil.create_cell_string(column='B', row=3)
+
+        actual = IF_ERROR(f'{C3}/{B3}', '"--"').to_str()
         self.assertEqual(expected, actual)
 
 
