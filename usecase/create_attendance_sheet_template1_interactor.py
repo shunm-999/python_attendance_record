@@ -15,6 +15,7 @@ from util.excelfunction.string import TEXT, TextFormat
 class CreateAttendanceSheetTemplate1Interactor(CreateAttendanceSheetUseCase):
 
     def __init__(self, excel_repository: ExcelRepositoryInterface):
+        super().__init__(excel_repository)
         self.excel_repository = excel_repository
         self.commuting, self.absense, self.holidays, self.substitute_holiday = "出勤", "欠勤", "有給休暇", "代休"
         self.attendance_classfication = [self.commuting, self.absense, self.holidays, self.substitute_holiday]
@@ -28,7 +29,7 @@ class CreateAttendanceSheetTemplate1Interactor(CreateAttendanceSheetUseCase):
         self.set_cell_number_format(input_data)
         self.set_header(input_data)
         self.set_data(input_data)
-        self.excel_repository.save()
+        self.excel_repository.save(input_data.filename)
 
     def modify_row_dimension(self) -> None:
         """
@@ -166,7 +167,7 @@ class CreateAttendanceSheetTemplate1Interactor(CreateAttendanceSheetUseCase):
         self.excel_repository.put(column='N', row=3, value=f'{sheet_date.year}/{sheet_date.month}/{sheet_date.day}')
 
         # 名前
-        self.excel_repository.put(column='C', row=7, value=input_data.username)
+        self.excel_repository.put(column='C', row=7, value=input_data.user_name)
 
         # 項目
         header = [['A', 6, "所属"],

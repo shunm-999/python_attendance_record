@@ -1,4 +1,5 @@
 import os
+import pathlib
 import unittest
 
 from openpyxl.styles import Color
@@ -18,7 +19,7 @@ class TestEmptyExcelRepository(unittest.TestCase):
         self.excel_repository.delete_sheet_from_index(0)
 
     def tearDown(self) -> None:
-        self.excel_repository.delete()
+        pathlib.Path(self.excel_filename).unlink(missing_ok=True)
 
     def test_init_repository(self):
         self.excel_repository.create_sheet('TestSheet1')
@@ -209,7 +210,7 @@ class TestEmptyExcelRepository(unittest.TestCase):
         self.excel_repository.create_sheet('sample')
         self.assertFalse(os.path.exists(self.excel_filename))
 
-        self.excel_repository.save()
+        self.excel_repository.save(self.excel_filename)
         self.assertTrue(os.path.exists(self.excel_filename))
 
     def test_save_new_title(self):
@@ -218,18 +219,6 @@ class TestEmptyExcelRepository(unittest.TestCase):
 
         self.excel_repository.save(filename=self.excel_filename)
         self.assertTrue(os.path.exists(self.excel_filename))
-
-    def test_delete(self):
-        self.excel_repository.create_sheet('sample')
-        self.excel_repository.save()
-
-        self.assertTrue(os.path.exists(self.excel_filename))
-
-        self.excel_repository.delete()
-        self.assertFalse(os.path.exists(self.excel_filename))
-
-    def test_delete_not_exist_file(self):
-        self.excel_repository.delete()
 
 
 class TestOneSheetExcelRepository(unittest.TestCase):
