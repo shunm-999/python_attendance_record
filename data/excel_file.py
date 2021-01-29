@@ -1,4 +1,3 @@
-import os
 from typing import Optional
 
 import openpyxl
@@ -7,8 +6,7 @@ from data.excel_sheet import ExcelSheet
 
 
 class ExcelFile:
-    def __init__(self, filename: str, create_file=False):
-        self.__filename = filename
+    def __init__(self, filename: str = None, create_file=False):
         self.__excel_sheet_list = []
         if create_file:
             self.__workbook = openpyxl.Workbook()
@@ -87,23 +85,8 @@ class ExcelFile:
         if self.is_contains(sheet_title):
             self.__workbook.active = self.__workbook.sheetnames.index(sheet_title)
 
-    def save(self, filename=None):
-        if filename is None:
-            self.__workbook.save(self.__filename)
-        else:
-            self.__workbook.save(filename)
-
-    def delete(self):
-        try:
-            os.remove(self.__filename)
-        except IOError:
-            pass
-
-    def __str__(self):
-        description = f'{self.__filename} \n'
-        description += '\n'.join(
-            [f'{index} : {sheetname}' for index, sheetname in enumerate(self.__workbook.sheetnames)])
-        return description
+    def save(self, filename):
+        self.__workbook.save(filename)
 
 
 class ExcelFileFactory:
@@ -112,5 +95,5 @@ class ExcelFileFactory:
         return ExcelFile(filename=filename, create_file=False)
 
     @staticmethod
-    def create(filename):
-        return ExcelFile(filename=filename, create_file=True)
+    def create():
+        return ExcelFile(create_file=True)

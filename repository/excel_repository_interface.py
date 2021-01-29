@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+
 from openpyxl.styles import Border, Font, PatternFill
 
 from const.alignmentconst import AlignmentConst
@@ -47,11 +48,7 @@ class ExcelRepositoryInterface(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def save(self, filename=None):
-        pass
-
-    @abstractmethod
-    def delete(self):
+    def save(self, filename):
         pass
 
     """

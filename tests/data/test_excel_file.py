@@ -228,7 +228,7 @@ class TestOperationExcelFile(unittest.TestCase):
         self.excel_file.create_sheet('sample')
         self.assertFalse(os.path.exists(self.excel_filename))
 
-        self.excel_file.save()
+        self.excel_file.save(filename=self.excel_filename)
         self.assertTrue(os.path.exists(self.excel_filename))
 
     def test_save_new_title(self):
@@ -238,15 +238,3 @@ class TestOperationExcelFile(unittest.TestCase):
 
         self.excel_file.save(filename=self.excel_filename)
         self.assertTrue(os.path.exists(self.excel_filename))
-
-    def test_delete(self):
-        self.excel_file.create_sheet('sample')
-        self.excel_file.save()
-
-        self.assertTrue(os.path.exists(self.excel_filename))
-
-        self.excel_file.delete()
-        self.assertFalse(os.path.exists(self.excel_filename))
-
-    def test_delete_not_exist_file(self):
-        self.excel_file.delete()

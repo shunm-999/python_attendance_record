@@ -1,6 +1,7 @@
 import os
-from openpyxl.styles import Font, Border, PatternFill
 from typing import Optional
+
+from openpyxl.styles import Font, Border, PatternFill
 
 from const.alignmentconst import AlignmentConst
 from dao.excel_sheet_dao import ExcelSheetDao
@@ -11,11 +12,11 @@ from repository.excel_repository_interface import ExcelRepositoryInterface
 
 class ExcelRepository(ExcelRepositoryInterface):
 
-    def __init__(self, filename: str):
-        if os.path.exists(filename):
+    def __init__(self, filename: str = None):
+        if filename is not None and os.path.exists(filename):
             self.excel_file = ExcelFileFactory.load(filename)
         else:
-            self.excel_file = ExcelFileFactory.create(filename)
+            self.excel_file = ExcelFileFactory.create()
 
         # daoの一時情報
         self.__tmp_active_sheet = None
@@ -71,11 +72,8 @@ class ExcelRepository(ExcelRepositoryInterface):
     def switch_active_sheet_from_sheet_title(self, sheet_title: str):
         self.excel_file.switch_active_sheet_from_sheet_title(sheet_title=sheet_title)
 
-    def save(self, filename=None):
+    def save(self, filename):
         self.excel_file.save(filename=filename)
-
-    def delete(self):
-        self.excel_file.delete()
 
     """
     基本関数
