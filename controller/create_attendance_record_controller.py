@@ -55,9 +55,9 @@ class CreateAttendanceRecordController:
                 FileUtil.make_dirs(str(temp_parent_dir))
 
                 # ユーザー名が存在する場合は、末尾に追記
-                filename = f"勤務表_{sheet_date.strftime('%Y%m%d')}.xlsx"
+                filename = f"勤務表_{sheet_date.strftime('%Y%m')}.xlsx"
                 if user_name:
-                    filename = f"勤務表_{sheet_date.strftime('%Y%m%d')}({user_name}).xlsx"
+                    filename = f"勤務表_{sheet_date.strftime('%Y%m')}({user_name}).xlsx"
 
                 file_path = str(temp_parent_dir.joinpath(filename).resolve())
 
