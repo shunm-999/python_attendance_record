@@ -313,9 +313,9 @@ class CreateAttendanceSheetTemplate1Interactor(CreateAttendanceSheetUseCase):
             self.excel_repository.put(column='I',
                                       row=16 + index,
                                       value='=' + IF_ERROR(IF(
-                                          AND(IS_NOT_BLANK(J_col), f'{C_col}="{self.commuting}"', f'{overtime} > 0'),
-                                          overtime,
-                                          '""'), '""').to_str())
+                                          AND(IS_NOT_BLANK(G_col), IS_NOT_BLANK(F_col), IS_NOT_BLANK(J_col),
+                                              f'{C_col}="{self.commuting}"', f'{overtime} > 0'),
+                                          overtime, '""'), '""').to_str())
         # 実働時間 （当日・累計）
         for index in range(0, last_day_of_month):
             C_col = ExcelUtil.create_cell_string(column='C', row=16 + index, fixed_column=True)
