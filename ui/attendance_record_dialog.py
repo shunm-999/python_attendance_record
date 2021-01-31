@@ -2,11 +2,11 @@ import datetime
 import pathlib
 
 from PySide2 import QtWidgets, QtGui
-from PySide2.QtCore import QFile, QDate
-from PySide2.QtUiTools import QUiLoader
+from PySide2.QtCore import QDate
 from PySide2.QtWidgets import QFileDialog
 
 from controller.create_attendance_record_controller import CreateAttendanceRecordController, TemplateType
+from ui.attendance_record import Ui_AttendanceRecordDialog
 
 
 class AttendanceRecordDialog(QtWidgets.QMainWindow):
@@ -15,14 +15,8 @@ class AttendanceRecordDialog(QtWidgets.QMainWindow):
         super().__init__(parent)
         self.to_save_directory = None
 
-        # ui ファイルを開く
-        file = QFile('ui/attendance_record.ui')
-        file.open(QFile.ReadOnly)
-
-        # ローダを使って ui ファイルをロードする
-        loader = QUiLoader()
-        self.ui = loader.load(file)
-        self.setCentralWidget(self.ui)
+        self.ui = Ui_AttendanceRecordDialog()
+        self.ui.setupUi(self)
 
         # 初期のフォーカスを、ディレクトリ選択ボタンに設定
         self.ui.ButtonSelectSaveDirectory.setFocus()
