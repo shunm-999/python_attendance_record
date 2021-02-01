@@ -159,6 +159,10 @@ class ExcelRepositoryInterface(metaclass=ABCMeta):
         pass
 
     @abstractmethod
+    def set_number_formats(self, start_row, start_column, end_row, end_column, number_format: str):
+        pass
+
+    @abstractmethod
     def set_text_alignment(self, row, column, horizontal: AlignmentConst, vertical: AlignmentConst,
                            text_rotation: int = 0):
         pass

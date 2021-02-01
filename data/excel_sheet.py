@@ -229,6 +229,16 @@ class ExcelSheet:
         coordinate = ExcelUtil.create_cell_string(row=row, column=column)
         self.__worksheet[coordinate].number_format = number_format
 
+    def set_number_formats(self, start_row, start_column, end_row, end_column, number_format: str):
+        if type(start_column) is str:
+            start_column = column_index_from_string(start_column)
+        if type(end_column) is str:
+            end_column = column_index_from_string(end_column)
+
+        for row_num in range(start_row, end_row + 1):
+            for column_num in range(start_column, end_column + 1):
+                self.__worksheet.cell(row=row_num, column=column_num).number_format = number_format
+
     def set_text_alignment(self, row, column, horizontal: AlignmentConst, vertical: AlignmentConst,
                            text_rotation: int = 0):
         coordinate = ExcelUtil.create_cell_string(row=row, column=column)

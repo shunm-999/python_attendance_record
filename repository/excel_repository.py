@@ -186,6 +186,10 @@ class ExcelRepository(ExcelRepositoryInterface):
     def set_number_format(self, row, column, number_format: str):
         self.__excel_sheet_dao.set_number_format(row=row, column=column, number_format=number_format)
 
+    def set_number_formats(self, start_row, start_column, end_row, end_column, number_format: str):
+        self.__excel_sheet_dao.set_number_formats(start_row=start_row, start_column=start_column, end_row=end_row,
+                                                  end_column=end_column, number_format=number_format)
+
     def set_text_alignment(self, row, column, horizontal: AlignmentConst, vertical: AlignmentConst,
                            text_rotation: int = 0):
         self.__excel_sheet_dao.set_text_alignment(row=row, column=column, horizontal=horizontal, vertical=vertical,

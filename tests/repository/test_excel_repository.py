@@ -4,6 +4,7 @@ import unittest
 
 from openpyxl.styles import Color
 from openpyxl.styles.colors import BLACK
+from openpyxl.styles.numbers import FORMAT_DATE_TIME3
 
 from data.excel_sheet import ExcelSheet
 from repository.excel_repository import ExcelRepository
@@ -402,3 +403,7 @@ class TestOneSheetExcelRepository(unittest.TestCase):
 
     def test_set_number_format(self):
         self.excel_repository.set_number_format(row=1, column=1, number_format='[h]:mm')
+
+    def test_set_number_formats(self):
+        self.excel_repository.set_number_formats(start_row=1, start_column='A', end_row=48, end_column='C',
+                                                 number_format=FORMAT_DATE_TIME3)
