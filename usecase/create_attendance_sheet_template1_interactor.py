@@ -1,5 +1,7 @@
 import calendar
 
+from openpyxl.styles.numbers import FORMAT_DATE_TIME3
+
 from const.alignmentconst import AlignmentConst
 from data.user_input_data import UserInputData
 from repository.excel_repository_interface import ExcelRepositoryInterface
@@ -151,10 +153,12 @@ class CreateAttendanceSheetTemplate1Interactor(CreateAttendanceSheetUseCase):
 
         self.excel_repository.set_number_format(column='D', row=12, number_format='[h]:mm')
         self.excel_repository.set_number_format(column='F', row=12, number_format='[h]:mm')
-        for index in range(0, last_day_of_month):
-            self.excel_repository.set_number_format(column='I', row=16 + index, number_format='[h]:mm')
-            self.excel_repository.set_number_format(column='J', row=16 + index, number_format='[h]:mm')
-            self.excel_repository.set_number_format(column='K', row=16 + index, number_format='[h]:mm')
+        self.excel_repository.set_number_formats(start_row=16, start_column='I',
+                                                 end_row=16 + (last_day_of_month - 1), end_column='K',
+                                                 number_format='[h]:mm')
+        self.excel_repository.set_number_formats(start_row=16, start_column='D',
+                                                 end_row=16 + (last_day_of_month - 1), end_column='H',
+                                                 number_format=FORMAT_DATE_TIME3)
 
     def set_header(self, input_data: UserInputData):
         # 題名
@@ -183,11 +187,11 @@ class CreateAttendanceSheetTemplate1Interactor(CreateAttendanceSheetUseCase):
                   ['B', 15, "曜日"],
                   ['C', 14, "勤怠区分"],
                   ['D', 14, "予定"],
-                  ['D', 15, "出社時刻"],
-                  ['E', 15, "退社時刻"],
+                  ['D', 15, "出勤時刻"],
+                  ['E', 15, "退勤時刻"],
                   ['F', 14, "実施"],
-                  ['F', 15, "出社時刻"],
-                  ['G', 15, "退社時刻"],
+                  ['F', 15, "出勤時刻"],
+                  ['G', 15, "退勤時刻"],
                   ['H', 15, "休憩時間"],
                   ['I', 15, "残業時間"],
                   ['J', 14, "実施時間"],
